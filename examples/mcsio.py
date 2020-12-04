@@ -36,13 +36,18 @@ try:
         SwitchStatus = GPIO.input(17)
         if SwitchStatus == 1:
             print("Button Pressed")
-            time.sleep(3)
+            if h0 is not None and t0 is not None:
+                print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(t0, h0))
+            else:
+                print('Failed to get reading. Try again!')
         else:
             print("Button not Pressed")
-            time.sleep(3)
-        print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(t0, h0))
+            if h0 is not None and t0 is not None:
+                print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(t0, h0))
+            else:
+                print('Failed to get reading. Try again!')
+        
         payload = {"datapoints":[{"dataChnId":"Humidity","values":{"value":h0}},{"dataChnId":"Temperature","values":{"value":t0}},{"dataChnId":"SwitchStatus","values":{"value":SwitchStatus}}]}	
         post_to_mcs(payload)
-        time.sleep(1)
 except KeyboardInterrupt:
     print('關閉程式')
